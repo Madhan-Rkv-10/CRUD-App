@@ -1,9 +1,12 @@
 package com.example.crudapp
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.crudapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 
@@ -18,8 +21,36 @@ class MainActivity : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             addRecord(employeeDao)
         }
+        lifecycleScope.launch {
+            employeeDao.fetchAllEmployees().collect {
+                Log.d("exactemployee", "$it")
+                val list = ArrayList(it)
+                setupListOfDataIntoRecyclerView(list,employeeDao)
+            }
+        }
 
     }
+
+
+    private fun setupListOfDataIntoRecyclerView(
+        employeeList: ArrayList<EmployeeEntity>,
+        employeeDao: EmployeeDao
+    ) {
+        if (employeeList.isNotEmpty()) {
+            val itemAdapter = ItemAdapter(employeeList)
+            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
+            // adapter instance is set to the recyclerview to inflate the items.
+            binding?.rvItemsList?.adapter = itemAdapter
+            binding?.rvItemsList?.visibility = View.VISIBLE
+            binding?.tvNoRecordsAvailable?.visibility = View.GONE
+        }   // Set the LayoutManager that this RecyclerView will use.
+        else {
+            binding?.rvItemsList?.visibility = View.GONE
+            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
+        }
+
+    }
+
     fun addRecord(employeeDao: EmployeeDao) {
         val name = binding?.etName?.text.toString()
         val email = binding?.etEmailId?.text.toString()
