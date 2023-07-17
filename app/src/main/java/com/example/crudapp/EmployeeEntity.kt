@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class EmployeeEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val name: String="",
     @ColumnInfo(name = "email-id")// internal reference is email-id
     val email: String = ""// this is for only user Reference
 )
