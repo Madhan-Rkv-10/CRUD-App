@@ -9,9 +9,9 @@ import com.example.crudapp.databinding.ItemRowBinding
 
 class ItemAdapter(
     private val items: ArrayList<EmployeeEntity>
-//    ,
-//    private val updateListener: (id: Int) -> Unit,
-//    private val deleteListener: (id: Int) -> Unit
+    ,
+    private val updateListener: (id: Int) -> Unit,
+    private val deleteListener: (id: Int) -> Unit
 ) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
@@ -61,11 +61,11 @@ class ItemAdapter(
 // Todo 3 set onclick listem on the icon and invoke update and delete listeners
         //start
         holder.ivEdit.setOnClickListener {
-//            updateListener(item.id)
+            updateListener(item.id)
         }
 
         holder.ivDelete.setOnClickListener {
-//            deleteListener(item.id)
+            deleteListener(item.id)
         }
     }
 //end
